@@ -1,7 +1,7 @@
 const { BadRequestError ,UnauthenticatedError} = require('../errors');
 const User = require('../models/User');
 const { StatusCodes } = require('http-status-codes');
-
+const authService=require('../services/auth.service')
 const register = async (req, res, next) => {
   // res.send('register user')
   const { name, email, password } = req.body;
@@ -19,22 +19,20 @@ const register = async (req, res, next) => {
   // res.status(StatusCodes.CREATED).json({ user: { name: user.getName() }, token });//how to use methods in mongoose
   res.status(StatusCodes.CREATED).json({ user: { name: user.name }, token });
 };
-
+/**
+ * Handles user login.
+ * @function
+ * @async
+ * @param {Object} req - Express request object.
+ * @param {Object} res - Express response object.
+ * @param {Function} next - Express next middleware function.
+ * @returns {Promise<void>} A promise that resolves once the response is sent.
+ * @throws {Error} If there is an issue during the login process.
+ */
 const login = async (req, res, next) => {
-  // res.send('login user');
   const {  email, password } = req.body;
-  if ( !email || !password) throw new BadRequestError('empty inputs');
-  
-  const user = await User.findOne({ email })
-  if (!user) {
-    throw new UnauthenticatedError('invalid credentials');
-  }
-  const isMatch = await user.comparePassword(password)
-
-  if (!isMatch) throw new UnauthenticatedError('not correct password');
-  
-  const token = user.createJWT()
-  res.status(StatusCodes.OK).json({ user: { name: user.name }, token })
+  const user=await authService.login(email,password)
+  res.status(StatusCodes.OK).json(user)
 };
 module.exports = {
   register,
