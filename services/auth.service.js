@@ -15,13 +15,29 @@ const login = async (email, password) => {
   const token = user.createJWT();
   return {
     user: {
-        name: user.name,
-        email: user.email,
-        id: user._id,
+      name: user.name,
+      email: user.email,
+      id: user._id,
     },
-    token: token
+    token: token,
   };
 };
+
+const register = async (name, email, password) => {
+  if (!name || !email || !password) throw new BadRequestError('empty inputs');
+  const user = await User.create({ name, email, password });
+  const token = user.createJWT();
+  return {
+    user: {
+      name: user.name,
+      email: user.email,
+      id: user._id,
+    },
+    token: token,
+  };
+};
+
 module.exports = {
   login,
+  register,
 };
