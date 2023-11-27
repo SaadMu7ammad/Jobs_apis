@@ -14,6 +14,7 @@ const swaggerDocument = YAML.load('./swagger.yaml');
 const express = require('express');
 const connectDB = require('./db/connect');
 const app = express();
+app.use(express.urlencoded({ extended: true })); //form data || x-www-form-urlencoded
 const authRoute = require('./routes/auth');
 const jobsRoute = require('./routes/jobs');
 // error handler
