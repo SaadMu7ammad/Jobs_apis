@@ -1,6 +1,6 @@
 const express = require('express');
 const router = express.Router();
-const jobsControllers = require('../controllers/jobs');
+const jobsControllers = require('../controllers/jobs.controller');
 
 router
   .route('/')
