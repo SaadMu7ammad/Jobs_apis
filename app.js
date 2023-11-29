@@ -15,8 +15,8 @@ const express = require('express');
 const connectDB = require('./db/connect');
 const app = express();
 app.use(express.urlencoded({ extended: true })); //form data || x-www-form-urlencoded
-const authRoute = require('./routes/auth');
-const jobsRoute = require('./routes/jobs');
+const authRoute = require('./routes/auth.router');
+const jobsRoute = require('./routes/jobs.router');
 // error handler
 const notFoundMiddleware = require('./middleware/not-found');
 const errorHandlerMiddleware = require('./middleware/error-handler');
