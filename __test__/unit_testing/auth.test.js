@@ -2,7 +2,7 @@ const User = require('../../src/models/User');
 const authService = require('../../src/services/auth.service');
 jest.mock('../../src/models/User', () => ({
   findOne: jest.fn(),
-  comparePassword: jest.fn().mockImplementation((a, b) => a === b),
+  create: jest.fn(),
 }));
 
 describe('unit testing for auth user', () => {
@@ -34,11 +34,29 @@ describe('unit testing for auth user', () => {
       password: 'password',
       // comparePassword: jest.fn().mockImplementation((a, b) => a === b),
       createJWT: jest.fn().mockReturnValue('token'),
+      comparePassword: jest.fn().mockResolvedValue(true),
     };
     User.findOne.mockResolvedValue(user);
-    user.comparePassword = jest.fn().mockResolvedValue(true);
     await expect(
       authService.login(user.email, user.password)
     ).resolves.not.toThrow('not correct password');
+  });
+});
+
+describe('unit testing for register user', () => {
+  afterEach(() => {
+    jest.clearAllMocks();
+  });
+  test('should throw an error if any field is missing', async () => {
+    await expect(authService.register()).rejects.toThrow('empty inputs');
+  });
+  test('happy tests case all is good :)', async () => {
+    let user = {
+      createJWT: jest.fn().mockReturnValue('token'),
+    };
+    User.create.mockResolvedValue(user);
+    await expect(authService.register(true, true, true)).resolves.not.toThrow(
+      'empty inputs'
+    );
   });
 });
