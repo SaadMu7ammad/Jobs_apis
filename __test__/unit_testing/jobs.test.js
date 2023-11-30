@@ -73,36 +73,42 @@ describe('unit testing for jobs.service', () => {
   });
   describe('unit testing for editing a job functions', () => {
     it('any missing parameters for editing a job', async () => {
-      await expect(jobsService.editJob(true, null, true)).rejects.toThrow(
+      await expect(jobsService.editJob(true, null)).rejects.toThrow(
         'no user found'
       );
       await expect(jobsService.editJob(true, true, null)).rejects.toThrow(
         'no job found'
       );
-      await expect(jobsService.editJob(null, true, true)).rejects.toThrow(
+      await expect(jobsService.editJob(null)).rejects.toThrow(
         'no value entered to update the task'
       );
       //   String.prototype.trim = jest.fn().mockReturnValue(false);
+      //   Job.findOneAndUpdate.mockReturnValue(false);
 
-      //   await expect(
-      //     jobsService.editJob({ name: 'name', position: 'position' }, true, true)
-      //   ).rejects.toThrow('no value entered to update the task');
+      let obj = { name: 'name', position: '' };
+      await expect(jobsService.editJob(obj, true, true)).rejects.toThrow(
+        'no value entered to update the task'
+      );
       //   String.prototype.trim.mockReset();
     });
     it('no job founded to edit', async () => {
-      //   String.prototype.trim = jest.fn().mockReturnValue(true); //{ name: 'name', position: 'position' });
-      //   Job.findOneAndUpdate.mockReturnValue(false);
-      //   await expect(
-      //     jobsService.editJob({ name: 'name', position: 'position' }, true, true)
-      //   ).rejects.toThrow('Not Found task with id');
+      let obj = { name: 'name', position: 'position' };
+
+      //   String.prototype.trim = jest.fn().mockReturnValue(obj); //{ name: 'name', position: 'position' });
+      Job.findOneAndUpdate.mockReturnValue(false);
+      await expect(jobsService.editJob(obj, true, true)).rejects.toThrow(
+        'Not Found task with id'
+      );
       //   String.prototype.trim.mockReset();
     });
     it('all is good happy scenario', async () => {
-      //   String.prototype.trim = jest.fn().mockReturnValue(true); //{ name: 'name', position: 'position' });
-      //   Job.findOneAndUpdate.mockReturnValue(true);
-      //   await expect(
-      //     jobsService.editJob({ name: 'name', position: 'position' }, true, true)
-      //   ).resolves.not.toThrow('Not Found task with id');
+      let obj = { name: 'name', position: 'position' };
+
+      //   String.prototype.trim = jest.fn().mockReturnValue(obj); //{ name: 'name', position: 'position' });
+      Job.findOneAndUpdate.mockReturnValue(true);
+      await expect(jobsService.editJob(obj, true, true)).resolves.not.toThrow(
+        'Not Found task with id'
+      );
       //   String.prototype.trim.mockReset();
     });
   });
