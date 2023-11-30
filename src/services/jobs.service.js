@@ -28,9 +28,9 @@ const createJob = async (reqBody, userId) => {
   return job;
 };
 const editJob = async (body, userId, jobId) => {
+  if (!body) throw new BadRequestError('no value entered to update the task');
   if (!userId) throw new NotFoundError('no user found');
   if (!jobId) throw new BadRequestError('no job found');
-  if (!body) throw new BadRequestError('no value entered to update the task');
   const { name, position } = body;
   if (!name.trim() || !position.trim())
     throw new BadRequestError('no value entered to update the task');
