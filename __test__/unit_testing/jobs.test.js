@@ -124,7 +124,7 @@ describe('unit testing for jobs.service', () => {
     });
     it('all is good happy scenario', async () => {
       Job.findByIdAndDelete.mockReturnValue(true);
-      await expect(jobsService.deleteJob(true, true)).resolves.toThrow(
+      await expect(jobsService.deleteJob(true, true)).resolves.not.toThrow(
         'Not Found task with id'
       );
     });
