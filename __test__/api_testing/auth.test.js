@@ -4,7 +4,6 @@ jest.mock('../../src/models/User', () => ({
   findOne: jest.fn(),
   comparePassword: jest.fn().mockImplementation((a, b) => a === b),
 }));
-// jest.mock('../../src/models/User');
 
 describe('unit testing for auth user', () => {
   afterEach(() => {
@@ -29,16 +28,17 @@ describe('unit testing for auth user', () => {
       'not correct password'
     );
   });
-//   test('all is good', async () => {
-//     let user = {
-//       //a candidate password
-//       //b origin user password
-//       comparePassword: jest.fn().mockImplementation((a, b) => a === b),
-//     };
-//     User.findOne.mockResolvedValue(user);
-//     user.comparePassword = jest.fn().mockResolvedValue(true);
-//     await expect(authService.login(true, true)).resolves.not.toThrow(
-//       'not correct password'
-//     );
-//   });
+  test('happy tests case all is good :)', async () => {
+    let user = {
+      email: 'temp@gmailcom',
+      password: 'password',
+      // comparePassword: jest.fn().mockImplementation((a, b) => a === b),
+      createJWT: jest.fn().mockReturnValue('token'),
+    };
+    User.findOne.mockResolvedValue(user);
+    user.comparePassword = jest.fn().mockResolvedValue(true);
+    await expect(
+      authService.login(user.email, user.password)
+    ).resolves.not.toThrow('not correct password');
+  });
 });
