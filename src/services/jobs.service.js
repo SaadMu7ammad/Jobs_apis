@@ -11,8 +11,8 @@ const getAllJobs = async (userId) => {
   return jobs;
 };
 const getJob = async (userId, jobId) => {
-  if (!jobId) throw new BadRequestError('no job found');
   if (!userId) throw new NotFoundError('no user found');
+  if (!jobId) throw new BadRequestError('no job found');
 
   const job = await Job.findOne({ _id: jobId, createdBy: userId }); //to check that job id is unique for one user
   if (!job) throw new NotFoundError('Not Found task with id');
@@ -24,14 +24,16 @@ const createJob = async (reqBody, userId) => {
 
   reqBody.createdBy = userId;
   const job = await Job.create(reqBody);
+  if (!job) throw new BadRequestError('job is not created');
   return job;
 };
 const editJob = async (body, userId, jobId) => {
-  if (!jobId) throw new BadRequestError('no job found');
   if (!userId) throw new NotFoundError('no user found');
+  if (!jobId) throw new BadRequestError('no job found');
+  if (!body) throw new BadRequestError('no value entered to update the task');
   const { name, position } = body;
   if (!name.trim() || !position.trim())
-    throw new BadRequestError('no value enterd to update the task');
+    throw new BadRequestError('no value entered to update the task');
   // console.log(jobId);
   const job = await Job.findOneAndUpdate(
     { _id: jobId, createdBy: userId },
@@ -42,8 +44,8 @@ const editJob = async (body, userId, jobId) => {
   return job;
 };
 const deleteJob = async (userId, jobId) => {
-  if (!jobId) throw new BadRequestError('no job found');
   if (!userId) throw new NotFoundError('no user found');
+  if (!jobId) throw new BadRequestError('no job found');
 
   const job = await Job.findByIdAndDelete({ _id: jobId, createdBy: userId }); //to check that job id is unique for one user
   if (!job) throw new NotFoundError('Not Found task with id');
