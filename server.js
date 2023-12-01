@@ -12,6 +12,7 @@ const server = async () => {
     startApp.listen(port, () =>
       console.log(`Server is listening on port ${port}...`)
     );
+    // return startApp; // Return the http.createServer object
   } catch (error) {
     console.log(error);
   }
@@ -19,4 +20,4 @@ const server = async () => {
 
 server();
 
-module.exports = server;
+module.exports = { server, startApp };
