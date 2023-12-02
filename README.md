@@ -3,6 +3,10 @@
 ```bash
 npm install && npm start
 ```
+#### Testing with Jest
+
+1. unit testing
+2. integration testing
 
 #### Database Connection
 
@@ -15,6 +19,10 @@ npm install && npm start
 
 - auth.js
 - jobs.js
+
+#### Service Layer
+
+A dedicated service layer is employed to encapsulate business logic and interact with data. This layer promotes code modularity and separation of concerns.
 
 #### User Model
 
